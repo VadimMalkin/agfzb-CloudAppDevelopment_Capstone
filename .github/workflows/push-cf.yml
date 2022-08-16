@@ -5,7 +5,7 @@ on: workflow_dispatch
 # Environment variables available to all jobs and steps in this workflow
 env:
   IBM_CLOUD_REGION: eu-de
-  IBM_CLOUD_GROUP: default
+  IBM_CLOUD_GROUP: Default
   IBM_CLOUD_SPACE: coolspace
   IBM_CLOUD_ORG: vadimtest987
   MANIFEST_NAME: manifest.yml
