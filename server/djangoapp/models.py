@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-from 
+import extra
 
 # Create your models here.
 
