@@ -80,18 +80,55 @@ def registration_request(request):
         else:
             return render(request, 'djangoapp/index.html', context)
 
-# Update the `get_dealerships` view to render the index page with a list of dealerships
-def get_dealerships(request):
+def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        return render(request, 'djangoapp/index.html', context)
-
-
-# Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+        url = 'https://eda3f908.eu-gb.apigw.appdomain.cloud/api/review'
+        reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
+        context = {
+            "reviews":  reviews,
+            "dealer_id": dealer_id
+        }
+        # for every review, convert the string purchase into a boolean
+        for review in reviews:
+            review.purchase = review.purchase == "True"
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+
+
+def add_review(request, dealer_id):
+    context = {}
+    review = dict()
+    if request.method == "GET":
+        # Get dealer details from the API
+        context = {
+            "cars": CarModel.objects.all(),
+            "dealer_id": dealer_id
+        }
+        return render(request, 'djangoapp/add_review.html', context)
+
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            review['review'] = {}
+            review['review']["time"] = datetime.utcnow().isoformat()
+            review['review']["dealership"] = dealer_id
+            review['review']["review"] = request.POST["review"]
+            review['review']["purchase"] = request.POST["purchase"]
+            review['review']['purchase_date'] = request.POST['purchase_date'] or "N/A"
+            review['review']["car_model"] = request.POST["car_model"] or "N/A"
+            review['review']["car_make"] = request.POST["car_make"] or "N/A"
+            review['review']["car_year"] = request.POST["car_year"] or "N/A"
+            userr = User.objects.get(username=request.user)
+            review['review']['id'] = userr.id
+            review['review']["name"] = userr.first_name + " " + userr.last_name
+
+            url = "https://eda3f908.eu-gb.apigw.appdomain.cloud/api/review"
+
+            #json_payload = {}
+            #json_payload['review'] = review
+
+            post_request(url, review, dealerId=dealer_id)
+
+            return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
 
