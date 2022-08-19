@@ -80,6 +80,20 @@ def registration_request(request):
         else:
             return render(request, 'djangoapp/index.html', context)
 
+def get_dealerships(request):
+    if request.method == "GET":
+        context = {}
+        url = "https://eda3f908.eu-gb.apigw.appdomain.cloud/api/dealership"
+        # Get dealers from the Cloudant DB
+        dealerships = get_dealers_from_cf(url)
+        context['dealer_list'] = dealerships
+        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
+        context['dealer_names'] = dealer_names
+        # return HttpResponse(dealer_names)
+        return render(request, 'djangoapp/index.html', context)
+
+
+# View to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
@@ -131,4 +145,3 @@ def add_review(request, dealer_id):
             post_request(url, review, dealerId=dealer_id)
 
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
-
