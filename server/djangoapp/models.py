@@ -1,22 +1,47 @@
 from django.db import models
 from django.utils.timezone import now
-import extra
+from django.core import serializers 
+import uuid
+import json
+import datetime
+
 
 # Create your models here.
 
 # Car Make model
-clasas carMake(models.Model):
-  name = models.CharField(null=False, max_lenght=50)
-  descrtiption = models.CharField(null=True, max_length=500)
-def __str__(self):
-  return self.name
+class CarMake(models.Model):
+    name = models.CharField(null=False, max_length=20, default='undefined')
+    # - Name
+    description = models.TextField(null=True)
+    # - Description
+    def __str__(self):
+    # - __str__ method to print a car make object
+        return self.name + ": " + self.description
 
 class CarModel(models.Model):
     car_make = models.ForeignKey(CarMake, null=True, on_delete=models.CASCADE)
     name = models.CharField(null=False, max_length=50)
     dealer_id = models.IntegerField(null=True)
-    model_type = models.CharField(null=False, max_length=15, choices=CAR_CHOICES, default=SEDAN)
-    
+
+    SEDAN = "Sedan"
+    SUV = "SUV"
+    WAGON = "Wagon"
+    SPORT = "Sport"
+    COUPE = "Coupe"
+    MINIVAN = "Mini"
+    VAN = "Van"
+    PICKUP = "Pickup"
+    TRUCK = "Truck"
+    BIKE = "Bike"
+    SCOOTER = "Scooter"
+    OTHER = "Other"
+    CAR_CHOICES = [(SEDAN, "Sedan"), (SUV, "SUV"), (WAGON, "Station wagon"), (SPORT, "Sports Car"),
+                   (COUPE, "Coupe"), (MINIVAN, "Mini van"), (VAN,
+                                                             "Van"), (PICKUP, "Pick-up truck"),
+                   (TRUCK, "Truck"), (BIKE, "Motor bike"), (SCOOTER, "Scooter"), (OTHER, 'Other')]
+    model_type = models.CharField(
+        null=False, max_length=15, choices=CAR_CHOICES, default=SEDAN)
+
     YEAR_CHOICES = []
     for r in range(1969, (datetime.datetime.now().year+1)):
         YEAR_CHOICES.append((r, r))
@@ -28,6 +53,7 @@ class CarModel(models.Model):
         return self.name + ", " + str(self.year) + ", " + self.model_type
 
 
+# A plain Python class to hold dealer data
 class CarDealer:
     def __init__(self, address, city, full_name, id, lat, long, short_name, st, state, zip):
         self.address = address
