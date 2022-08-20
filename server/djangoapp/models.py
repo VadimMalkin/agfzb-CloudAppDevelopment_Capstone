@@ -55,36 +55,49 @@ class CarModel(models.Model):
 
 # A plain Python class to hold dealer data
 class CarDealer:
+
     def __init__(self, address, city, full_name, id, lat, long, short_name, st, state, zip):
+        # Dealer address
         self.address = address
+        # Dealer city
         self.city = city
-        self.full_name = full_name  # Full name of dealership
-        self.id = id  # Dealership id
+        # Dealer Full Name
+        self.full_name = full_name
+        # Dealer id
+        self.id = id
+        # Location lat
         self.lat = lat
+        # Location long
         self.long = long
+        # Dealer short name
         self.short_name = short_name
-        self.st = st  # State alpha code
-        self.state = state  # Full state name
+        # Dealer state
+        self.st =  st
+        self.state = state
+        # Dealer zip
         self.zip = zip
-        self.idx = 0
 
     def __str__(self):
-        return self.full_name + ", " + self.state
+        return "Dealer name: " + self.full_name
 
 
 # A plain Python class to hold review data
 class DealerReview:
-    def __init__(self, dealership, id, name, purchase, review, car_make=None, car_model=None, car_year=None, purchase_date=None, sentiment="neutral"):
-        self.car_make = car_make
-        self.car_model = car_model
-        self.car_year = car_year
+
+    def __init__(self, dealership, name, purchase, review):
+        # Required attributes
         self.dealership = dealership
-        self.id = id  # The id of the review
-        self.name = name  # Name of the reviewer
-        self.purchase = purchase  # Did the reviewer purchase the car? bool
-        self.purchase_date = purchase_date
-        self.review = review  # The actual review text
-        self.sentiment = sentiment  # Watson NLU sentiment analysis of review
+        self.name = name
+        self.purchase = purchase
+        self.review = review
+        # Optional attributes
+        self.purchase_date = ""
+        self.purchase_make = ""
+        self.purchase_model = ""
+        self.purchase_year = ""
+        self.sentiment = ""
+        self.id = ""
+
 
     def __str__(self):
         return "Reviewer: " + self.name + " Review: " + self.review

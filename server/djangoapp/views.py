@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
-# from .restapis import related methods
+from .models import CarModel
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -83,7 +83,7 @@ def registration_request(request):
 def get_dealerships(request):
     if request.method == "GET":
         context = {}
-        url = "https://eda3f908.eu-gb.apigw.appdomain.cloud/api/dealership"
+        url = "https://ead7231c.eu-de.apigw.appdomain.cloud/api/dealership"
         # Get dealers from the Cloudant DB
         dealerships = get_dealers_from_cf(url)
         context['dealer_list'] = dealerships
@@ -97,7 +97,7 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = 'https://eda3f908.eu-gb.apigw.appdomain.cloud/api/review'
+        url = "https://ead7231c.eu-de.apigw.appdomain.cloud/api/review"
         reviews = get_dealer_reviews_from_cf(url, dealer_id=dealer_id)
         context = {
             "reviews":  reviews,
@@ -137,11 +137,11 @@ def add_review(request, dealer_id):
             review['review']['id'] = userr.id
             review['review']["name"] = userr.first_name + " " + userr.last_name
 
-            url = "https://eda3f908.eu-gb.apigw.appdomain.cloud/api/review"
+            url = "https://ead7231c.eu-de.apigw.appdomain.cloud/api/review"
 
-            #json_payload = {}
-            #json_payload['review'] = review
+            json_payload = {}
+            json_payload['review'] = review
 
-            post_request(url, review, dealerId=dealer_id)
+            post_request(url, json_payload, dealerId=dealer_id)
 
             return redirect("djangoapp:dealer_details", dealer_id=dealer_id)
