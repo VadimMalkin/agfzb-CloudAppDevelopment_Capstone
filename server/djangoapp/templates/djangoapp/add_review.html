@@ -11,7 +11,7 @@
 
 </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{% url 'djangoapp:index' %}">BestCar Dealership Branch Reviews</a>
                 <div class="collapse navbar-collapse" id="navbarText">
@@ -44,57 +44,55 @@
                 </div>
             </div>
         </nav>
-        <main class="container">
-            {% if user.is_authenticated%}
-            <h1>Add a Review about this Dealership</h1>
-            <form class="my-3" action="{% url 'djangoapp:add_review' dealer_id %}" method="post">
-                <div class='container' style="width: 600px;">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="review">Enter the review content:</label><br/>
-                        <textarea name="review" class="form-control" rows="2" required></textarea><br/>
-    
-                        <label for="purchase">Have you purchased a car from this Dealership?</label><br/>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" value="True" name="purchase">
-                            <label class="form-check-label" for="purchase">
-                                True
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" value="False" name="purchase" checked>
-                            <label class="form-check-label" for="purchase">
-                                False
-                            </label>
-                        </div><br/>
-    
-                        <label class="text-warning">If purhcased, please give us more information:</label><br/>
-                        <label for="car_make">Car Make</label>
-                        <input name="car_make" class="form-control" type="text" placeholder="Mercedes-Benz">
-                        <label for="car_model">Car Model</label>
-                        <input name="car_model" class="form-control" type="text" placeholder="GLC 43">
-                        <label for="car_year">Model Year</label>
-                        <input name="car_year" class="form-control" type="number" min="1990" max="2021" step="1" placeholder="2021">
-    
-                        <br/>
-                        <div class="form-group" data-provide="datepicker">
-                            <label for="purchase_date">Select your purchase date:</label>
-                            <input class="date-own" type="text" name="purchase_date" id="purchase_date">
-                                    <script type="text/javascript">
-                                        $('.date-own').datepicker({
-                                            format: 'mm/dd/yyyy'
-                                        });
-                                    </script>  
-                        </div>
-                        <br/>
-    
-                        <button class="btn btn-primary" type="submit">Submit Review</button>
-                    </div>
+        <div class="container-fluid">
+            <h3>Add a review about <b>{{dealer.full_name}}</b></h3>
+            <form action="{% url 'djangoapp:add_review' dealer.id%}" method="post">
+                <div class="form-group">
+        
+                      <div class="mb-3">
+                          <label for="content"><b>Enter the review content: </b></label>
+                          <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+                      </div>
+        
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">
+                          <label class="form-check-label" for="purchasecheck">
+                              Has purchased the car from {{dealer.full_name}} ?
+                          </label>
+                          <label class="text-muted">(select purchased car information below if checked)</label>
+                      </div>
+        
+                      <div class="mb-3">
+                          <label for="car"><b>Select your car (model-make-year):</b></label>
+                          <select name="car" id="car" class="form-select" required>
+                              {% for car in cars %}
+                              <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}</option>  
+                              {% endfor %}
+                          </select>
+                      </div>
+        
+                      <div class="mb-3">
+                          <label for="purchasedate"><b>Select Your Purchase Date: </b></label>
+                          <input class="date-own form-control" style="width: 300px;" type="text" name="purchasedate" id="purchasedate">
+                      </div>
+        
                 </div>
+                {% csrf_token %}
+                <div>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
             </form>
-    
-        {% else %}
-            <a class="btn btn-outline-primary mx-5 my-5" href="{% url 'djangoapp:register' %}">Sign up to Review</a>
-        {% endif %}
-    </body>
+        </div>
+        </body>
+        
+        <script type="text/javascript">
+              $('.date-own').datepicker({
+                 format: 'mm/dd/yyyy'
+               });
+         </script>
 </html>
