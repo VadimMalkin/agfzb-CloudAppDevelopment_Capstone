@@ -5,14 +5,12 @@
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel = "stylesheet">
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-    <script>
-        $( function() {
-          $( "#datepicker" ).datepicker();
-        } );
-        </script>
+
 
 </head>
     <body>
@@ -67,14 +65,13 @@
                             <label for="car">Select your car (model-make-year): </label>
                             <select name="car" id="car" class="form-select" required>
                                 {% for car in cars %}
-                                    <option selected value={{car.dealer_id}}>{{car.name}}-{{car.car_make}}-{{car.year}}</option>
+                                    <option selected value={{car.id}}>{{car.name}}-{{car.car_make.name}}-{{car.year}}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <p>Date: <input type="text" id="datepicker"></p>
-                        <div class="form-group" data-provide="datepicker">
+                        <div class="mb-3">
                             <label for="purchase_date">Select your purchase date:</label>
-                            <input type="text" name="purchase_date" id="purchase_date">
+                            <input class="date-own form-control" style="width: 300px;" type="text" name="purchase_date" id="purchase_date">
                                      
                         </div>
                         <br/>
@@ -88,4 +85,9 @@
             <a class="btn btn-outline-primary mx-5 my-5" href="{% url 'djangoapp:register' %}">Sign up to Review</a>
         {% endif %}
     </body>
+    <script type="text/javascript">
+        $('.date-own').datepicker({
+           format: 'mm/dd/yyyy'
+         });
+   </script>
 </html>

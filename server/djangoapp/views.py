@@ -147,9 +147,9 @@ def add_review(request, dealer_id):
             if review["purchase"]:
                 review["purchase_date"] = form["purchase_date"]
                 car = CarModel.objects.get(pk=form["car"])
-                review["car_make"] = car.car_make
+                review["car_make"] = car.car_make.name
                 review["car_model"] = car.name
-                review["car_year"] = car.year
+                review["car_year"] = int(car.year)
             else:
                 review["purchase_date" ]= None
                 review["car_make"] = None

@@ -54,9 +54,9 @@
         {% for review in reviews %}
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">{{ review.name }}</h5>
-                    {% if review.purchase %}
-                        <h6 class="card-title">Purchased a {{ review.car_make }} {{ review.car_model }} on {{ review.purchase_date }}</h6>
+                    <h4 class="card-title">{{ review.name }}</h4>
+                    {% if review.car_make %}
+                        <h5 class="card-title">Purchased a {{ review.car_make }} {{ review.car_model }} {{review.car_year}}</h5>
                     {% else %}
                         <h6 class="card-title">No Purchase Record</h6>
                     {% endif %}
