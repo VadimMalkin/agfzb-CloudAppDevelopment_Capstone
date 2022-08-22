@@ -1,10 +1,10 @@
   applications:
-  - name: djangoapp
+  - name: djangoapp2
     routes:
       - route: vadimmalkin8.eu-de.cf.appdomain.cloud
     memory: 128M
     buildpack: python_buildpack
-  - name: djangoapp-nginx
+  - name: djangoapp2-nginx
     routes:
       - route: vadimmalkin8.eu-de.cf.appdomain.cloud/static
     memory: 128M
