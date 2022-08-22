@@ -9,7 +9,7 @@ from django.contrib import messages
 from datetime import datetime
 import logging
 import json
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request, get_dealers_by_state
 from .models import CarModel
 
 # Get an instance of a logger
@@ -119,9 +119,12 @@ def get_dealer_details(request, dealer_id):
 
 def add_review(request, dealer_id):
     context = {}
-    review = dict()
     if request.method == "GET":
         # Get dealer details from the API
+        dealer_url="https://ead7231c.eu-de.apigw.appdomain.cloud/api/dealership"
+        dealers = get_dealers_by_state(dealer_url, dealer_id)
+        context["dealers"] = dealers
+        context["dealer_id"] = dealer_id
         context = {
             "cars": CarModel.objects.all(),
             "dealer_id": dealer_id
@@ -131,17 +134,27 @@ def add_review(request, dealer_id):
     if request.method == "POST":
         if request.user.is_authenticated:
             review = dict()
-            
+            form = request.POST
             review["dealership"] = dealer_id
-            review["review"] = request.POST["review"]
-            review["purchase"] = request.POST["purchase"]
-            review['purchase_date'] = request.POST['purchase_date'] or "N/A"
-            review["car_model"] = request.POST["car_model"] or "N/A"
-            review["car_make"] = request.POST["car_make"] or "N/A"
-            review["car_year"] = request.POST["car_year"] or "N/A"
-            userr = User.objects.get(username=request.user)
-            review['id'] = 10
-            review["name"] = userr.first_name + " " + userr.last_name
+            review["name"] = request.user.first_name + ' ' + request.user.last_name
+            review["review"] = form["review"]
+            review["id"] = request.user.id
+            if(form.get("purchasecheck") == "on"):
+                review["purchase"] = True
+            else:
+                review["purchase"] = False
+            
+            if review["purchase"]:
+                review["purchase_date"] = form["purchase_date"]
+                car = CarModel.objects.get(pk=form["car"])
+                review["car_make"] = car.car_make
+                review["car_model"] = car.name
+                review["car_year"] = car.year
+            else:
+                review["purchase_date" ]= None
+                review["car_make"] = None
+                review["car_model"] = None
+                review["car_year"] = None
 
             url = "https://ead7231c.eu-de.apigw.appdomain.cloud/api/review"
 

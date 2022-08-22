@@ -76,10 +76,10 @@ def get_dealers_from_cf(url, **kwargs):
     return results
 
 
-def get_dealers_by_state(url, state):
+def get_dealers_by_state(url, dealer_id):
     results = []
     # Call get_request with the state param
-    json_result = get_request(url, state=state)
+    json_result = get_request(url, id=dealer_id)
     dealers = json_result["listOfDealership"]
     # For each dealer in the response
     for dealer in dealers:

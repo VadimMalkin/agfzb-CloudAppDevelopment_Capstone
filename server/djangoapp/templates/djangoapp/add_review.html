@@ -8,6 +8,11 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <script>
+        $( function() {
+          $( "#datepicker" ).datepicker();
+        } );
+        </script>
 
 </head>
     <body>
@@ -54,37 +59,23 @@
                         <label for="review">Enter the review content:</label><br/>
                         <textarea name="review" class="form-control" rows="2" required></textarea><br/>
     
-                        <label for="purchase">Have you purchased a car from this Dealership?</label><br/>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="True" name="purchase">
-                            <label class="form-check-label" for="purchase">
-                                True
-                            </label>
+                            <input class="form-check-input" type="checkbox" name="purchasecheck" id="purchasecheck">
+                        <label for="purchasecheck">Has purchased the car from {{dealer.full_name}}? (select purchased car information below if checked)</label>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" value="False" name="purchase" checked>
-                            <label class="form-check-label" for="purchase">
-                                False
-                            </label>
-                        </div><br/>
-    
-                        <label class="text-warning">If purhcased, please give us more information:</label><br/>
-                        <label for="car_make">Car Make</label>
-                        <input name="car_make" class="form-control" type="text" placeholder="Mercedes-Benz">
-                        <label for="car_model">Car Model</label>
-                        <input name="car_model" class="form-control" type="text" placeholder="GLC 43">
-                        <label for="car_year">Model Year</label>
-                        <input name="car_year" class="form-control" type="number" min="1990" max="2021" step="1" placeholder="2021">
-    
-                        <br/>
+                        <div class="form-group">
+                            <label for="car">Select your car (model-make-year): </label>
+                            <select name="car" id="car" class="form-select" required>
+                                {% for car in cars %}
+                                    <option selected value={{car.dealer_id}}>{{car.name}}-{{car.car_make}}-{{car.year}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <p>Date: <input type="text" id="datepicker"></p>
                         <div class="form-group" data-provide="datepicker">
                             <label for="purchase_date">Select your purchase date:</label>
-                            <input class="date-own" type="text" name="purchase_date" id="purchase_date">
-                                    <script type="text/javascript">
-                                        $('.date-own').datepicker({
-                                            format: 'mm/dd/yyyy'
-                                        });
-                                    </script>  
+                            <input type="text" name="purchase_date" id="purchase_date">
+                                     
                         </div>
                         <br/>
     
