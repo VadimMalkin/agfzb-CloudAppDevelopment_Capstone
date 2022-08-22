@@ -13,9 +13,9 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body class="text-center">
+<body>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'djangoapp:index' %}">BestCar Dealership Branch Reviews</a>
             <div class="collapse navbar-collapse" id="navbarText">
@@ -49,18 +49,35 @@
         </div>
     </nav>
     <!-- Main content. HTML inserted from extensions of base.html -->
-    <main role="main" class="column justify-content-center">
-        <h1 class="heading-txt" style="font-size: 2em; margin-bottom: 3%; text-align: center;">Contact</h1>
+    <main role="main" class="column">
+        <h1 class="heading-txt" style="font-size: 2em; margin-bottom: 3%; text-align: center;">Contact Information</h1>
         <div style="margin-top: 5%;display: flex; justify-content: space-evenly; flex-wrap: wrap;">
-        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
-            <div class="card-header">Contact Information</div>
+        <div class="card mb-3">
+            <div class="card-header" style="font-size: 2em;"">Rent a car</div>
             <div class="card-body">
-                <h5 class="card-title">Customer Care</h5>
-                <p class="card-text">Name: VadimM </br> Mobile: fakeNumber </br> Email: vadim@dealership.com </p>
+                <p class="card-text" >Name: Jeremy </br> Mobile: fakeNumber </br> Email: clarkson@dealership.com </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-header" style="font-size: 2em;">Buy a car</div>
+            <div class="card-body">
+                <p class="card-text">Name: James </br> Mobile: fakeNumber </br> Email: may@dealership.com </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-header" style="font-size: 2em;">Tuning</div>
+            <div class="card-body">
+                <p class="card-text">Name: Richard</br> Mobile: fakeNumber </br> Email: hammond@dealership.com </p>
+            </div>
+        </div>
+        <div class="card mb-3">
+            <div class="card-header" style="font-size: 2em;">Customer Care</div>
+            <div class="card-body">
+                <p class="card-text">Name: Alex </br> Mobile: fakeNumber </br> Email: steve@dealership.com </p>
             </div>
         </div>
     </main>
-    <footer>
+    <footer class="text-center">
         Footer
         © 2022 GitHub, Inc.
         Footer navigation
