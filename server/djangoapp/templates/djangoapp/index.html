@@ -14,21 +14,20 @@
 </head>
 
     <body>
-    <!--Add a nav bar here -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'djangoapp:index' %}">BestCar Dealership Branch Reviews</a>
-            <div class="collapse navbar-collapse" id="navbarText">
-                <ul style="justify-content:left;" class="navbar-nav">
-                    <li class="navbar-nav">
-                        <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
-                    </li>
-                    <li class="navbar-nav">
-                        <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="nav navbar-nav navbar-right">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'djangoapp:index' %}">BestCar Dealership Branch Reviews</a>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    <ul style="justify-content:left;" class="navbar-nav">
+                        <li class="navbar-brand">
+                            <a class="nav-link" href="{% url 'djangoapp:about' %}">About Us</a>
+                        </li>
+                        <li class="navbar-brand">
+                            <a class="nav-link" href="{% url 'djangoapp:contact' %}">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
                     <li>
                         <a class="btn btn-link" href="#">{{ user.first_name }} ({{ user.username }})</a>
@@ -46,52 +45,44 @@
                     </form>
                     {% endif %}
                 </div>
-        </div>
-    </nav>
-    <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-warning" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    
-        <table class="table" id="table"
-            data-filter-control="true">
+            </div>
+        </nav>
+        {% block content %}
+        {% if dealer_list %}
+        <table class="table table-striped" id="table" data-filter-control="true" style="margin-top: 3%; margin-bottom: 3%;">
             <thead>
-                <tr>
-                    <th data-field="id">ID</th>
-                    <th data-field="full_name">Dealer Name</th>
-                    <th data-field="city">City</th>
-                    <th data-field="address">Address</th>
-                    <th data-field="zip">Zip</th>
-                    <th data-field="state" data-filter-control="select">State</th>
-                </tr>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Dealer Name</th>
+                <th scope="col">City</th>
+                <th scope="col">Address</th>
+                <th scope="col">Zip</th>
+                <th data-field="state" data-filter-control="select">State</th>
+            </tr>
             </thead>
-             <tbody>
-                {% for dealer in dealership_list %}
-                    <tr>
-                        
-                        <td>{{dealer.id}}</td>
-                        <td><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
-                        <td>{{dealer.city}}</td>
-                        <td>{{dealer.address}}</td>
-                        <td>{{dealer.zip}}</td>
-                        <td>{{dealer.st}}</td>
-                    </tr>
-                {% endfor %}
-             </tbody>
+            <tbody>
+            {% for dealer in dealer_list %}
+            <tr>
+                <td style="padding: 2%;">{{ dealer.id }}</td>
+                <td style="padding: 2%;"><a href="{% url 'djangoapp:dealer_details' dealer.id %}">{{dealer.full_name}}</a></td>
+                <td style="padding: 2%;">{{ dealer.city }}</td>
+                <td style="padding: 2%;">{{ dealer.address}}</td>
+                <td style="padding: 2%;">{{ dealer.zip}}</td>
+                <td style="padding: 2%;">{{ dealer.st }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
         </table>
-        </div>
+        {% else %}
+        <h3>No dealer available.</h3>
+        {% endif %}
+        {% endblock %}
 
-    </div>
+        <script>
+            $(function() {
+                $('#table').bootstrapTable()
+            })
+        </script>
     </body>
-    
-    
-    <script>
-      $(function() {
-        $('#table').bootstrapTable()
-      })
-    </script>
 
 </html>
-
